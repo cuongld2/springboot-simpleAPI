@@ -5,6 +5,7 @@ import javax.persistence.*;
 
 @Entity
 public class Blog {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
