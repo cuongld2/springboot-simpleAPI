@@ -5,6 +5,7 @@ package donald.apiwithspringboot.controller;
 import donald.apiwithspringboot.exceptions.ValidationException;
 import donald.apiwithspringboot.model.UserInfo;
 import donald.apiwithspringboot.repository.UserInfoRepository;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -20,7 +21,7 @@ public class UserInfoController {
     final
     private UserInfoRepository userInfoRepository;
 
-    private HashData hashData = new HashData();
+//    private HashData hashData = new HashData();
 
     public UserInfoController(UserInfoRepository userInfoRepository) {
         this.userInfoRepository = userInfoRepository;
@@ -37,9 +38,10 @@ public class UserInfoController {
         }
 
         String password = body.get("password");
-        String hashedPassword = hashData.get_SHA_512_SecurePassword(password);
+        String encodedPassword = new BCryptPasswordEncoder().encode(password);
+//        String hashedPassword = hashData.get_SHA_512_SecurePassword(password);
         String fullname = body.get("fullname");
-        userInfoRepository.save(new UserInfo(username, hashedPassword, fullname));
+        userInfoRepository.save(new UserInfo(username, encodedPassword, fullname));
         return true;
     }
 

@@ -28,14 +28,14 @@ public class AuthController {
     @Autowired
     private JwtUserDetailsService jwtUserDetailsService;
 
-    private HashData hashData = new HashData();
+//    private HashData hashData = new HashData();
 
     @RequestMapping(value = "/authenticate", method = RequestMethod.POST)
     public ResponseEntity<?> createAuthenticationToken(@RequestBody JwtRequest authenticationRequest) throws Exception {
 
-        String hashedPassword = hashData.get_SHA_512_SecurePassword(authenticationRequest.getPassword());
+//        String hashedPassword = hashData.get_SHA_512_SecurePassword(authenticationRequest.getPassword());
 
-        authenticate(authenticationRequest.getUsername(), hashedPassword);
+        authenticate(authenticationRequest.getUsername(), authenticationRequest.getPassword());
 
         final UserDetails userDetails = jwtUserDetailsService
 

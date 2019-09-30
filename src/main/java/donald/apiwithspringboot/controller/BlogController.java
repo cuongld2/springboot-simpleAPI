@@ -2,7 +2,6 @@ package donald.apiwithspringboot.controller;
 import donald.apiwithspringboot.model.Blog;
 import donald.apiwithspringboot.repository.BlogRepository;
 import org.springframework.web.bind.annotation.*;
-
 import java.util.List;
 import java.util.Map;
 
