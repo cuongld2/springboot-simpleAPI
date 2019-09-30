@@ -13,7 +13,6 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 import donald.apiwithspringboot.config.JwtToken;
 import org.springframework.security.authentication.AuthenticationManager;
-import utils.HashData;
 
 @RestController
 @CrossOrigin
@@ -28,12 +27,10 @@ public class AuthController {
     @Autowired
     private JwtUserDetailsService jwtUserDetailsService;
 
-//    private HashData hashData = new HashData();
 
     @RequestMapping(value = "/authenticate", method = RequestMethod.POST)
     public ResponseEntity<?> createAuthenticationToken(@RequestBody JwtRequest authenticationRequest) throws Exception {
 
-//        String hashedPassword = hashData.get_SHA_512_SecurePassword(authenticationRequest.getPassword());
 
         authenticate(authenticationRequest.getUsername(), authenticationRequest.getPassword());
 
