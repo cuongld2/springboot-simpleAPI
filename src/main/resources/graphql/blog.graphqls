@@ -1,0 +1,10 @@
+type Blog {
+    id: Int,
+    title: String,
+    content: String
+}
+
+type Query {
+    blogs(count: Int):[Blog]
+    blog(id: Int):Blog
+}
