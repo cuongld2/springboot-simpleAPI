@@ -1,4 +1,4 @@
-package donald.apiwithspringboot.query;
+package donald.apiwithspringboot.resolver.query;
 
 import com.coxautodev.graphql.tools.GraphQLQueryResolver;
 import donald.apiwithspringboot.model.Blog;

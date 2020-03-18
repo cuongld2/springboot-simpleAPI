@@ -4,6 +4,12 @@ package donald.apiwithspringboot.controller;
 import donald.apiwithspringboot.model.JwtRequest;
 import donald.apiwithspringboot.model.JwtResponse;
 import donald.apiwithspringboot.service.JwtUserDetailsService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -16,6 +22,7 @@ import org.springframework.security.authentication.AuthenticationManager;
 
 @RestController
 @CrossOrigin
+@Tag(name = "Authentication", description = "API for authenticate")
 public class AuthController {
 
     @Autowired
@@ -28,6 +35,10 @@ public class AuthController {
     private JwtUserDetailsService jwtUserDetailsService;
 
 
+    @Operation(summary = "Authenticate", description = "Authenticate user credentials", tags = { "authenticate" })
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "successful operation",
+                    content = @Content(schema = @Schema(implementation = JwtResponse.class))) })
     @RequestMapping(value = "/authenticate", method = RequestMethod.POST)
     public ResponseEntity<?> createAuthenticationToken(@RequestBody JwtRequest authenticationRequest) throws Exception {
 
