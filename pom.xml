@@ -4,6 +4,10 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
+    <properties>
+        <pact-jvm>4.1.7</pact-jvm>
+    </properties>
+
     <groupId>donald</groupId>
     <artifactId>api-with-spring-boot</artifactId>
     <version>1.0-SNAPSHOT</version>
@@ -80,17 +84,100 @@
             <artifactId>springdoc-openapi-ui</artifactId>
             <version>1.2.32</version>
         </dependency>
+        <!-- https://mvnrepository.com/artifact/junit/junit -->
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>4.13</version>
+            <scope>test</scope>
+        </dependency>
+        <!-- https://mvnrepository.com/artifact/au.com.dius/pact-jvm-consumer-junit -->
+        <dependency>
+            <groupId>au.com.dius.pact.provider</groupId>
+            <artifactId>maven</artifactId>
+            <version>4.1.0</version>
+            <scope>test</scope>
+        </dependency>
+        <!-- https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-test -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-test</artifactId>
+            <version>2.3.4.RELEASE</version>
+            <scope>test</scope>
+        </dependency>
+        <!-- https://mvnrepository.com/artifact/au.com.dius/pact-jvm-provider-junit -->
+        <!-- https://mvnrepository.com/artifact/au.com.dius.pact/provider -->
+        <dependency>
+            <groupId>au.com.dius.pact</groupId>
+            <artifactId>provider</artifactId>
+            <version>${pact-jvm}</version>
+        </dependency>
+        <!-- https://mvnrepository.com/artifact/au.com.dius.pact/consumer -->
+        <dependency>
+            <groupId>au.com.dius.pact</groupId>
+            <artifactId>consumer</artifactId>
+            <version>${pact-jvm}</version>
+        </dependency>
+        <!-- https://mvnrepository.com/artifact/au.com.dius.pact/pact-jvm-server -->
+        <dependency>
+            <groupId>au.com.dius.pact</groupId>
+            <artifactId>pact-jvm-server</artifactId>
+            <version>${pact-jvm}</version>
+            <type>pom</type>
+        </dependency>
+        <!-- https://mvnrepository.com/artifact/au.com.dius.pact/pact-publish -->
+        <dependency>
+            <groupId>au.com.dius.pact</groupId>
+            <artifactId>pact-publish</artifactId>
+            <version>${pact-jvm}</version>
+        </dependency>
+        <!-- https://mvnrepository.com/artifact/au.com.dius.pact/pact-specification-test -->
+        <dependency>
+            <groupId>au.com.dius.pact</groupId>
+            <artifactId>pact-specification-test</artifactId>
+            <version>${pact-jvm}</version>
+        </dependency>
+        <!-- https://mvnrepository.com/artifact/au.com.dius.pact.consumer/junit -->
+        <dependency>
+            <groupId>au.com.dius.pact.consumer</groupId>
+            <artifactId>junit</artifactId>
+            <version>${pact-jvm}</version>
+        </dependency>
     </dependencies>
-
-    <properties>
-        <java.version>1.8</java.version>
-    </properties>
 
     <build>
         <plugins>
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
+            </plugin>
+            <plugin>
+                <groupId>au.com.dius.pact.provider</groupId>
+                <artifactId>maven</artifactId>
+                <version>4.1.0</version>
+                <configuration>
+                    <serviceProviders>
+                        <!-- You can define as many as you need, but each must have a unique name -->
+                        <serviceProvider>
+                            <name>provider1</name>
+                            <!-- All the provider properties are optional, and have sensible defaults (shown below) -->
+                            <protocol>http</protocol>
+                            <host>localhost</host>
+                            <port>8081</port>
+                            <path>/</path>
+                            <pactFileDirectory>path/to/pacts</pactFileDirectory>
+                            <insecure>true</insecure>
+                            <consumers>
+                                <!-- Again, you can define as many consumers for each provider as you need, but each must have a unique name -->
+                                <consumer>
+                                    <name>consumer1</name>
+                                    <!--  currently supports a file path using pactFile or a URL using pactUrl -->
+                                    <pactFile>path/to/provider1-consumer1-pact.json</pactFile>
+                                </consumer>
+                            </consumers>
+                        </serviceProvider>
+                    </serviceProviders>
+                </configuration>
             </plugin>
         </plugins>
     </build>
