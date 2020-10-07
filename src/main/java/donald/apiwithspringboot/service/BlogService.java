@@ -13,7 +13,7 @@ import java.util.stream.Collectors;
 @Service
 public class BlogService {
 
-    private final BlogRepository blogRepository;
+    public BlogRepository blogRepository;
 
     public BlogService(final BlogRepository blogRepository){this.blogRepository = blogRepository;}
 

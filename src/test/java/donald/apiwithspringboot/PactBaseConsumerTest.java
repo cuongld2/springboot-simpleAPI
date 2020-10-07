@@ -1,67 +1,65 @@
 package donald.apiwithspringboot;
 
-import au.com.dius.pact.core.model.RequestResponsePact;
-import au.com.dius.pact.core.model.annotations.Pact;
-import donald.apiwithspringboot.controller.AuthController;
-import org.junit.runner.RunWith;
-import au.com.dius.pact.consumer.MockServer;
-import au.com.dius.pact.consumer.PactTestExecutionContext;
+import static org.assertj.core.api.Assertions.assertThat;
+import au.com.dius.pact.consumer.Pact;
+import au.com.dius.pact.consumer.PactProviderRuleMk2;
+import au.com.dius.pact.consumer.PactVerification;
+import au.com.dius.pact.consumer.dsl.DslPart;
 import au.com.dius.pact.consumer.dsl.PactDslWithProvider;
-import au.com.dius.pact.consumer.junit.ConsumerPactTest;
+import au.com.dius.pact.model.RequestResponsePact;
+import donald.apiwithspringboot.controller.BlogController;
+import donald.apiwithspringboot.model.Blog;
+import donald.apiwithspringboot.repository.BlogRepository;
+import io.pactfoundation.consumer.dsl.LambdaDsl;
+import java.util.Optional;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.junit4.SpringRunner;
-import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
-
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
-public class PactBaseConsumerTest extends ConsumerPactTest{
+public class PactBaseConsumerTest {
+
+    @MockBean(name="blogRepository")
+    BlogRepository blogRepository;
 
     @Autowired
-    AuthController providerService;
+    private BlogController blogController;
 
-    @Override
-    @Pact(provider="ExampleProvider", consumer="BaseConsumer")
-    public RequestResponsePact createPact(PactDslWithProvider builder) {
-        Map<String, String> headers = new HashMap<String, String>();
-        headers.put("Content-Type", "application/json;charset=UTF-8");
+    @Pact(consumer = "blog_by_id")
+    public RequestResponsePact pactBlogById(PactDslWithProvider builder) {
+
+        DslPart body = LambdaDsl.newJsonBody((o) -> o
+                .numberType("id", 1)
+                .stringType("title","Testing")
+                .stringType("content","Testing")
+                ).build();
 
         return builder
-                .given("")
-                .uponReceiving("Pact JVM example Pact interaction")
-                .path("/authenticate")
-                .body("{\n" +
-                        "\t\"username\": \"cuongld2\",\n" +
-                        "\t\"password\":\"12345\"\n" +
-                        "}")
-                .method("POST")
+                .uponReceiving("Get blog by ID")
+                .path("/blog/1")
+                .method("GET")
                 .willRespondWith()
-                .headers(headers)
                 .status(200)
-                .body("{\n" +
-                        "    \"token\": \"Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJjdW9uZ2xkMiIsImV4cCI6MTYwMTk3MzQ5MiwiaWF0IjoxNjAxOTU1NDkyfQ.9m1NrYXcRpBknJq0qkvSaXL-cMeGOrmCAsMjmMyJlWZ4hWQMLx2o4sc12jtx3y2KEj7d-T30W0iS4HsGRxcL3A\"\n" +
-                        "}")
+                .body(body)
                 .toPact();
     }
 
-    @Override
-    protected String providerName() {
-        return "ExampleProvider";
+    @PactVerification(fragment = "pactBlogById")
+    @Test
+    public void blogById() {
+
+        Blog blog = new Blog();
+        blog.setTitle("Testing");
+        blog.setContent("Testing");
+        blog.setId(1);
+        Mockito.when(blogRepository.findById(blog.getId())).thenReturn(Optional.of(blog));
+        Optional<Blog> blog_service_abc = Optional.ofNullable(blogController.show("1"));
+        assertThat(blog.getTitle()).isEqualTo(blog_service_abc.get().getTitle());
     }
-
-    @Override
-    protected String consumerName() {
-        return "BaseConsumer";
-    }
-
-    @Override
-    protected void runTest(MockServer mockServer, PactTestExecutionContext pactTestExecutionContext) throws IOException {
-
-        System.out.println("Pact test");
-    }
-
 
 }
