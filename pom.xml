@@ -120,16 +120,33 @@
     <build>
         <plugins>
             <plugin>
-                <groupId>au.com.dius</groupId>
-                <artifactId>pact-jvm-provider-maven_2.12</artifactId>
-                <version>${pact.version}</version>
-                <configuration>
-                    <!-- pact_broker is the service name in docker-compose -->
-                    <pactBrokerUrl>http://pact_broker</pactBrokerUrl>
-                    <projectVersion>${pact.consumer.version}</projectVersion>
-                    <tags>
-                        <tag>${pact.tag}</tag>
-                    </tags>
+                <groupId>au.com.dius.pact.provider</groupId>
+                <artifactId>maven</artifactId>
+                <version>4.1.0</version>
+                <configuration><!-- Defaults to ${project.build.directory}/pacts -->
+                    <pactBrokerUrl>http://localhost</pactBrokerUrl>
+                    <projectVersion>1.0.100</projectVersion> <!-- Defaults to ${project.version} -->
+                    <trimSnapshot>true</trimSnapshot> <!-- Defaults to false -->
+                    <skipPactPublish>false</skipPactPublish> <!-- Defaults to false -->
+                    <serviceProviders>
+                        <!-- You can define as many as you need, but each must have a unique name -->
+                        <serviceProvider>
+                            <name>provider1</name>
+                            <!-- All the provider properties are optional, and have sensible defaults (shown below) -->
+                            <protocol>http</protocol>
+                            <host>localhost</host>
+                            <port>8080</port>
+                            <path>/</path>
+                            <consumers>
+                                <!-- Again, you can define as many consumers for each provider as you need, but each must have a unique name -->
+                                <consumer>
+                                    <name>user-service</name>
+                                    <!--  currently supports a file path using pactFile or a URL using pactUrl -->
+                                    <pactFile>pacts/blog_by_id-user-service.json</pactFile>
+                                </consumer>
+                            </consumers>
+                        </serviceProvider>
+                    </serviceProviders>
                 </configuration>
             </plugin>
         </plugins>

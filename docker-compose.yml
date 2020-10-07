@@ -7,7 +7,7 @@ services:
     healthcheck:
       test: psql postgres --command "select 1" -U postgres
     ports:
-      - "5432:5432"
+      - "5433:5433"
     environment:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: password
@@ -24,14 +24,3 @@ services:
       PACT_BROKER_DATABASE_HOST: postgres
       PACT_BROKER_DATABASE_NAME: postgres
       PACT_BROKER_WEBHOOK_SCHEME_WHITELIST: http https
-  jenkins:
-    build:
-      context: jenkins
-    ports:
-      - "8080:8080"
-      - "50000:50000"
-    volumes:
-      - "./jenkins/jenkins_home:/var/jenkins_home"
-
-volumes:
-  jenkins_home:
