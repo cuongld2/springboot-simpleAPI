@@ -1,7 +1,6 @@
 package donald.apiwithspringboot;
 
 import org.junit.rules.ExternalResource;
-
 import java.net.ServerSocket;
 
 public class RandomPortRule extends ExternalResource {
