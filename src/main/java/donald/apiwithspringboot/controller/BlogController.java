@@ -18,8 +18,7 @@ import java.util.Map;
 @Tag(name = "Blog", description = "Blog controller")
 public class BlogController {
 
-    final
-    private BlogRepository blogRepository;
+    public BlogRepository blogRepository;
 
     public BlogController(BlogRepository blogRepository) {
         this.blogRepository = blogRepository;
@@ -33,7 +32,6 @@ public class BlogController {
     public List<Blog> index(){
         return blogRepository.findAll();
     }
-
 
 
     @Operation(summary = "Find blog by id", description = "Find blog by id", tags = { "blog" })

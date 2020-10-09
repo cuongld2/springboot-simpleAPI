@@ -34,7 +34,6 @@ public class AuthController {
     @Autowired
     private JwtUserDetailsService jwtUserDetailsService;
 
-
     @Operation(summary = "Authenticate", description = "Authenticate user credentials", tags = { "authenticate" })
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "successful operation",
