@@ -106,12 +106,10 @@
             <version>2.3.4.RELEASE</version>
             <scope>test</scope>
         </dependency>
-        <!-- https://mvnrepository.com/artifact/au.com.dius/pact-jvm-provider-junit -->
-        <!-- https://mvnrepository.com/artifact/au.com.dius.pact/provider -->
         <dependency>
             <groupId>au.com.dius</groupId>
-            <artifactId>pact-jvm-consumer-java8_2.12</artifactId>
-            <version>${pact.version}</version>
+            <artifactId>pact-jvm-provider-spring_2.12</artifactId>
+            <version>3.5.24</version>
             <scope>test</scope>
         </dependency>
     </dependencies>
@@ -122,9 +120,12 @@
             <plugin>
                 <groupId>au.com.dius.pact.provider</groupId>
                 <artifactId>maven</artifactId>
-                <version>4.1.0</version>
+                <version>4.1.7</version>
                 <configuration><!-- Defaults to ${project.build.directory}/pacts -->
                     <pactBrokerUrl>http://localhost</pactBrokerUrl>
+                    <tags>
+                        <tag>test</tag>
+                    </tags>
                     <projectVersion>1.0.100</projectVersion> <!-- Defaults to ${project.version} -->
                     <trimSnapshot>true</trimSnapshot> <!-- Defaults to false -->
                     <skipPactPublish>false</skipPactPublish> <!-- Defaults to false -->
@@ -142,7 +143,7 @@
                                 <consumer>
                                     <name>front-end</name>
                                     <!--  currently supports a file path using pactFile or a URL using pactUrl -->
-                                    <pactUrl>http://localhost/</pactUrl>
+                                    <pactUrl>http://localhost/pacts/provider/blog-service/consumer/front-end/latest</pactUrl>
                                 </consumer>
                             </consumers>
                         </serviceProvider>
