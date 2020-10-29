@@ -143,7 +143,7 @@
                                 <consumer>
                                     <name>front-end</name>
                                     <!--  currently supports a file path using pactFile or a URL using pactUrl -->
-                                    <pactUrl>http://localhost/pacts/provider/blog-service/consumer/front-end/latest</pactUrl>
+                                    <pactUrl>http://localhost/pacts/provider/blog-service/consumer/analytics/latest</pactUrl>
                                 </consumer>
                             </consumers>
                         </serviceProvider>

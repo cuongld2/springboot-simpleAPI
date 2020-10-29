@@ -12,18 +12,21 @@ public class Blog {
 
     private String title;
     private String content;
+    private String author;
 
     public Blog() {  }
 
-    public Blog(String title, String content) {
+    public Blog(String title, String content, String author) {
         this.setTitle(title);
         this.setContent(content);
+        this.setAuthor(author);
     }
 
-    public Blog(int id, String title, String content) {
+    public Blog(int id, String title, String content, String author) {
         this.setId(id);
         this.setTitle(title);
         this.setContent(content);
+        this.setAuthor(author);
     }
 
     public int getId() {
@@ -59,4 +62,11 @@ public class Blog {
                 '}';
     }
 
+    public String getAuthor() {
+        return author;
+    }
+
+    public void setAuthor(String author) {
+        this.author = author;
+    }
 }
